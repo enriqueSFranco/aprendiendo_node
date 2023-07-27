@@ -1,0 +1,8 @@
+/* 
+PROCESS ES UUN OBJETO GLOBAL QUE DA NODEJS, QUE 
+PROPORCIONA CONTROL SOBRE EL PROCESO ACTUAL
+DE EJECUCIÓN
+*/
+
+console.log(process.argv)
+console.log(process.cwd())

@@ -1,18 +1,25 @@
 {
   "name": "curso-web",
   "version": "1.0.0",
-  "description": "",
+  "description": "aprendiendo nodejs y javascript",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "node",
+    "javascript",
+    "nodejs"
+  ],
+  "author": "enriqueSFranco - kike",
   "license": "ISC",
   "devDependencies": {
-    "standard": "^17.0.0"
+    "standard": "17.0.0"
   },
   "eslintConfig": {
     "extends": "./node_modules/standard/eslintrc.json"
+  },
+  "dependencies": {
+    "picocolors": "1.0.0"
   }
 }

@@ -4,7 +4,8 @@
   "description": "aprendiendo nodejs y javascript",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch ./primeros_pasos_node/server/index.js"
   },
   "keywords": [
     "node",

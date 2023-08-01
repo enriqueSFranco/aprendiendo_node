@@ -4,5 +4,5 @@ PROPORCIONA CONTROL SOBRE EL PROCESO ACTUAL
 DE EJECUCIÓN
 */
 
-console.log(process.argv)
-console.log(process.cwd())
+console.log('command line arguments: ', process.argv)
+console.log('current directory: ', process.cwd())

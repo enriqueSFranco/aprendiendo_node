@@ -9,5 +9,5 @@ export function initFs () {
 
   const symbolicLink = stats.isSymbolicLink() // es un enlace simbolico
 
-  const sizeFile = stats.size() // tamaño del archivo
+  const sizeFile = stats.size // tamaño del archivo
 }

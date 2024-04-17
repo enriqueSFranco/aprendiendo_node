@@ -1,4 +1,6 @@
 const express = require('express')
+const z = require('zod')
+const validateMovie = require('./schemas/movie.js')
 const movies = require('./mocks/movies.json')
 
 const app = express()
@@ -36,17 +38,18 @@ app.get('/movies', (req, res) => { // http://localhost:1234/movies?genre=Terror&
 })
 
 app.post('/movies', (req, res) => {
-  const { title, year, director, duration, poster, genre, rate } = req.body
-  // VALIDAR LA INFORMACION
+  // const { title, year, director, duration, poster, genre, rate } = req.body <- recuperamos la informacion del body
+  // VALIDAR LA INFORMACION <- NO LO ARREGLA TYPESCRIPT
+  // DEBE SER ALGO QUE SE EJECUTE EN RUNTIME
+  const result = validateMovie(req.body)
+
+  if (result.error) {
+    return res.status(400).json({ error: JSON.parse(result.error.message) })
+  }
+
   const newMovie = {
-    id: crypto.randomUUID(), // uuid v4
-    title,
-    year,
-    director,
-    duration,
-    poster,
-    genre,
-    rate: rate ?? 0
+    id: crypto.randomUUID(),
+    ...result.data
   }
 
   movie.push(newMovie)

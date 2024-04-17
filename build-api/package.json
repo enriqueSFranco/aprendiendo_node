@@ -2,11 +2,13 @@
   "name": "build-api",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./http.js",
-    "dev:express": "nodemon ./index.js"
+    "dev:express": "nodemon ./index.js",
+    "dev:app": "nodemon ./app.js"
   },
   "keywords": [],
   "author": "",

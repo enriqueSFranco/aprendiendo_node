@@ -1,22 +1,25 @@
-import { MovieModel } from '../models/local-file-system/movies.js'
 import { validateMovie, validatePartialMovie } from '../schemas/movie.js'
 
 export class MovieController {
-  static async getAll (req, res) {
+  constructor({ movieModel }) {
+    this.movieModel = movieModel
+  }
+
+  getAll = async (req, res) => {
     // queryParams = [genre, search]
     const { genre } = req.query
-    const filteredMovies = await MovieModel.getAllMovies({ genre })
+    const filteredMovies = await this.movieModel.getAllMovies({ genre })
     res.json(filteredMovies)
   }
 
-  static async getById (req, res) {
+  getById = async (req, res) => {
     const { id } = req.params
-    const movie = await MovieModel.getMovieById({ movieId: id })
+    const movie = await this.movieModel.getMovieById({ movieId: id })
     if (movie) return res.json(movie)
     res.status(404).json({ message: 'Movie not found' })
   }
 
-  static async create (req, res) {
+  create = async (req, res) => {
     // const { title, year, director, duration, poster, genre, rate } = req.body <- recuperamos la informacion del body
     // VALIDAR LA INFORMACION <- NO LO ARREGLA TYPESCRIPT
     // DEBE SER ALGO QUE SE EJECUTE EN RUNTIME
@@ -25,26 +28,26 @@ export class MovieController {
     if (!result.success)
       return res.status(400).json({ error: JSON.parse(result.error.message) })
 
-    const newMovie = await MovieModel.createMovie({ payload: result.data })
+    const newMovie = await this.movieModel.createMovie({ payload: result.data })
     res.status(201).json(newMovie) // actualizar la cache del cliente
   }
 
-  static async delete (req, res) {
+  delete = async (req, res) => {
     const { id } = req.params
-    const deletedMovie = await MovieModel.deleteMovie({ movieId: id })
+    const deletedMovie = await this.movieModel.deleteMovie({ movieId: id })
 
     if (!deletedMovie) return res.status(400).json({ message: 'Movie not found' })
 
     return res.status(200).json({ message: 'Movie deleted' })
   }
 
-  static async update (req, res) {
+  update = async (req, res) => {
     const result = validatePartialMovie(req.body)
 
     if (!result.success) return res.status(400).json({ error: JSON.parse(result.error.message) })
 
     const { id } = req.params
-    const updatedMovie = await MovieModel.updateMovie({ movieId: id, payload: result.data })
+    const updatedMovie = await this.movieModel.updateMovie({ movieId: id, payload: result.data })
 
     if (!updatedMovie) return res.status(404).json({ message: 'Movie not found' })
 

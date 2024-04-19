@@ -60,3 +60,28 @@ CREATE TABLE IF NOT EXISTS MOVIE_GENRE(
 );
 
 -- INSERTANDO REGISTRONS EN LA TABLA MOVIE_GENRE
+
+INSERT INTO MOVIE_GENRE (movie_id, genre_id)
+SELECT movie_ids.id, genre_ids.id
+FROM movie_ids, genre_ids
+JOIN (
+    -- Crear una tabla temporal con los títulos de las películas y sus géneros
+    VALUES
+    ('The Shawshank Redemption', 'Drama'),
+    ('The Dark Knight', 'Action'), ('The Dark Knight', 'Crime'), ('The Dark Knight', 'Drama'),
+    ('Inception', 'Action'), ('Inception', 'Adventure'), ('Inception', 'Sci-Fi'),
+    ('Pulp Fiction', 'Crime'), ('Pulp Fiction', 'Drama'),
+    ('Forrest Gump', 'Drama'), ('Forrest Gump', 'Romance'),
+    ('Gladiator', 'Action'), ('Gladiator', 'Adventure'), ('Gladiator', 'Drama'),
+    ('The Matrix', 'Action'), ('The Matrix', 'Sci-Fi'),
+    ('Interstellar', 'Adventure'), ('Interstellar', 'Drama'), ('Interstellar', 'Sci-Fi'),
+    ('The Lord of the Rings: The Return of the King', 'Action'), ('The Lord of the Rings: The Return of the King', 'Adventure'), ('The Lord of the Rings: The Return of the King', 'Drama'),
+    ('The Lion King', 'Animation'), ('The Lion King', 'Adventure'), ('The Lion King', 'Drama'),
+    ('The Avengers', 'Action'), ('The Avengers', 'Adventure'), ('The Avengers', 'Sci-Fi'),
+    ('Jurassic Park', 'Adventure'), ('Jurassic Park', 'Sci-Fi'),
+    ('Titanic', 'Drama'), ('Titanic', 'Romance'),
+    ('The Social Network', 'Biography'), ('The Social Network', 'Drama'),
+    ('Avatar', 'Action'), ('Avatar', 'Adventure'), ('Avatar', 'Fantasy')
+) AS temp(title, genre)
+ON movie_ids.title = temp.title
+AND genre_ids.genre = temp.genre;

@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const { validateMovie, validatePartialMovie } = require('./schemas/movie.js')
+const { validateMovie, validatePartialMovie } = require('./schemas/movie.js').default
 const movies = require('./mocks/movies.json')
 
 const app = express()
@@ -8,7 +8,7 @@ const PORT = process.env.PORT ?? 1234
 
 const ACCEPTED_ORIGINS = [
   'http://127.0.0.1:3000',
-  'http://locahost:1234',
+  'http://localhost:1234',
   'http://127.0.0.1:5500',
   'https://movies.com',
 ]

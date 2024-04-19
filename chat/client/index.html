@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat</title>
+    <style>
+      *,
+      *::after,
+      *::before {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        color-scheme: light dark;
+      }
+
+      body {
+        display: grid;
+        place-content: center;
+        grid-template-rows: 1fr;
+        height: 100vh;
+        padding: 36px;
+      }
+
+      .container {
+        border: 1px solid #2e2e2e;
+        border-radius: 3px;
+        width: 350px;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+      }
+
+      #btn-send {
+        background-color: #1d1d1d;
+        border: none;
+        padding: 8px 16px;
+        transition: background-color 300ms ease-in-out;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      #btn-send:hover {
+        background-color: #313131;
+      }
+
+      #form {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        gap: 12px;
+        padding: 16px;
+      }
+
+      #input-message {
+        width: 100%;
+        border: none;
+        outline: none;
+        letter-spacing: 1px;
+        text-indent: 12px;
+        background-color: #1d1d1d;
+        border-radius: 999px;
+        padding: 8px 0;
+      }
+    </style>
+
+    <script type="module">
+      import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
+
+      const socket = io();
+
+      const $form = document.getElementById("form");
+      const $btn = document.getElementById("btn-send");
+      const $input = document.getElementById("input-message");
+      const $messages = document.getElementById("messages");
+
+      socket.on("chat-message", (msg) => {
+        const itemMessage = `<li>${msg}</li>`;
+        $messages.insertAdjacentHTML("beforeend", itemMessage);
+      });
+
+      $form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        if ($input.value) {
+          socket.emit("chat-message", $input.value);
+          $input.value = "";
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <section class="container">
+      <ul id="messages"></ul>
+      <form id="form">
+        <input id="input-message" type="text" placeholder="message..." />
+        <button id="btn-send">send</button>
+      </form>
+    </section>
+  </body>
+</html>

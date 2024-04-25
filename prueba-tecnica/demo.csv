@@ -1,0 +1,6 @@
+id,puesto,empresa,ubicación,descripción,fecha de publicación
+0,Desarrollador Web,ABC Tech, Ciudad de México,ABC Tech está buscando un desarrollador web con experiencia en HTML, CSS y JavaScript. Se valorará experiencia en frameworks como React o Angular.,2024-04-24
+1,Ingeniero de Software,XYZ Solutions, Barcelona,XYZ Solutions busca un ingeniero de software con experiencia en desarrollo de aplicaciones móviles tanto para iOS como para Android. Se requiere conocimiento en Swift, Kotlin y experiencia con APIs REST.,2024-04-23
+2,Analista de Datos,Data Insights Inc., Nueva York,Data Insights Inc. está en la búsqueda de un analista de datos con habilidades en SQL, Python y experiencia en herramientas de visualización de datos como Tableau o Power BI.,2024-04-22
+3,Diseñador Gráfico,Design Studio, Los Ángeles,Design Studio busca un diseñador gráfico creativo y con experiencia en Adobe Creative Suite. Se valorará experiencia en diseño de interfaces de usuario.,2024-04-21
+4,Especialista en Marketing Digital,Online Solutions Ltd., Londres,Online Solutions Ltd. está buscando un especialista en marketing digital con experiencia en SEO, SEM y gestión de campañas en redes sociales.,2024-04-20

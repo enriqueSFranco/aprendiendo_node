@@ -5,4 +5,8 @@ type ApiResponseUploadFile = {
   data: Data
 }
 
-export { ApiResponseUploadFile, Data }
+type ApiResponseSearch = {
+  data: Data
+}
+
+export { ApiResponseUploadFile, ApiResponseSearch, Data }

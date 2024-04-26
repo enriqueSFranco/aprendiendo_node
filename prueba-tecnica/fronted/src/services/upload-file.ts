@@ -1,15 +1,6 @@
-import { HOST_URL } from "../shared/constants"
-import { UPLOAD_FILES_URL } from "../shared/constants"
-import { ApiResponseUploadFile, Data } from "../shared/types"
-
-async function fetchData (endpont: URL, payload: FormData) {
-  const { href: url } = new URL(endpont)
-  const res = await fetch(url, {
-    method: 'POST',
-    body: payload
-  })
-  return res
-}
+import { HOST_URL, UPLOAD_FILES_URL } from "../shared/constants.d"
+import { ApiResponseUploadFile, Data } from "../shared/types.d"
+import { customFetch } from "../helpers/custom-fetch"
 
 export async function uploadFile (file: File): Promise<[Error?, Data?]> {
   const formData = new FormData()
@@ -17,7 +8,10 @@ export async function uploadFile (file: File): Promise<[Error?, Data?]> {
 
   try {
     const endpoint = new URL(`${HOST_URL}/${UPLOAD_FILES_URL}`)
-    const res = await fetchData(endpoint, formData)
+    const res = await customFetch(endpoint, {
+      method: 'POST',
+      body: formData
+    })
     console.log({ res })
     if (!res.ok) {
       const error = {

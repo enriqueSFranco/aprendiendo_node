@@ -1,29 +1,49 @@
 import express from 'express'
-import cors from 'cors'
-import formidable from 'formidable'
 
-const localStore = []
+import { upload } from './middlewares/multer.ts'
+import { checkTypeFile } from './utils/validate-file.ts'
+import { corsMiddleware } from './middlewares/cors.ts'
+import { CSVToJSONTransformer } from './utils/csv-to-json-transformer.ts'
+
+let userData: Array<Record<string, string>> = []
 
 const app = express()
 const PORT = process.env.PORT ?? 3000
 
-app.use(cors())
+app.use(corsMiddleware())
 
-app.post('/api/files', (req, res, next) => {
-  const form = formidable({ multiples: false })
+app.post('/api/files', upload.single('file'), (req, res) => {
+  const { file } = req
 
-  form.parse(req, (err, fields, files) => {
-    if (err) {
-      res.status(500).json({ data: null, message: '' })
-    }
-    const file = files.files
-    console.log(file)
-    res.status(200).json({ data: [], message: 'El archivo se cargó correctamente.' })
-  })
+  if (!file) {
+    return res.status(400).json({ message: 'File is required' })
+  }
+
+  const isValid = checkTypeFile(file)
+
+  if (!isValid)
+    return res.status(500).json({ message: 'The file must be csv.' })
+
+  userData = CSVToJSONTransformer(file)
+  return res.status(200).json({ data: userData, message: 'The file was uploaded successfully' })
 })
 
 app.get('/api/users', (req, res) => {
+  const { q } = req.query
 
+  if (!q) return
+
+  const query = q.toString().toLowerCase()
+
+  const filterData = userData.filter(row => {
+    const values = Object.values(row).some(val => val.toLocaleLowerCase().includes(query))
+    return values
+  })
+
+  if (!filterData)
+    return res.status(500).json({ message: 'No results found' })
+
+  return res.status(200).json({ data: filterData })
 })
 
 app.listen(PORT, () => {

@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react"
+import { toast } from "sonner"
+
 import { Data } from "../../../shared/types.d"
+import { searchData } from "../../../services/search-data"
+import Card from "../card/card"
 
 type Props = {
-  initialData: Data
+  initialData: Data | undefined
 }
 
-export default function Search ({ initialData }: Props) {
-  const [data, setData] = useState(initialData)
+export default function Search ({ initialData = [] }: Props) {
+  const [data, setData] = useState<Data | undefined>(initialData)
   const [search, setSearch] = useState('')
 
   useEffect(() => {
@@ -19,10 +23,25 @@ export default function Search ({ initialData }: Props) {
     setSearch(e.target.value)
   }
 
-  function handleSearch (e: React.ChangeEvent<HTMLFormElement>) {
-    e.preventDefault()
+  useEffect(() => {
+    if (!search) {
+      setData(initialData)
+      return
+    }
 
     // peticion a api/users
+    searchData(search)
+      .then(res => {
+        const [error, data] = res
+        if (error) {
+          toast.error(error.message)
+        }
+        if (data) setData(data)
+      })
+  }, [search, initialData])
+
+  function handleSearch (e: React.ChangeEvent<HTMLFormElement>) {
+    e.preventDefault()
   }
 
   return (
@@ -32,6 +51,16 @@ export default function Search ({ initialData }: Props) {
         <input defaultValue={search} onChange={handleChangeInput} type='search' placeholder='Buscar' />
         <button>buscar</button>
       </form>
+      <section>
+        <ul className="list">
+          {data && data.map(it => (
+            <li key={`item-${crypto.randomUUID()}`}>
+              <Card item={it} />
+            </li>
+          ))
+          }
+        </ul>
+      </section>
     </div>
   )
 }

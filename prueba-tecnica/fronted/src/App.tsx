@@ -72,7 +72,7 @@ function App () {
       {
         showSearch && (
           <>
-            <Search />
+            <Search initialData={data} />
             {
               data && (
                 <section>

@@ -2,13 +2,18 @@
   "name": "prueba-tecnica",
   "module": "index.ts",
   "type": "module",
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
+    "start": "concurrently \"cd apps/backend && bun run dev\" \"cd apps/frontend && bun run dev\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "devDependencies": {
     "@types/bun": "latest",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
+    "concurrently": "^8.2.2",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",

@@ -176,5 +176,5 @@ dist
 
 package-lock.json
 yarn.lock.json
-pnpm-lock.json
+pnpm-lock.yaml
 bun.lockb

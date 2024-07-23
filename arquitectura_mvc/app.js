@@ -7,14 +7,14 @@ import taskController from './controllers/taskController.js'
 import errorController from './controllers/errorController.js'
 
 const PORT = process.env.PORT ?? 3001
-const __dirname = path.dirname(new URL(import.meta.url).pathname)
+const __dirname = process.cwd()
 
 const app = express()
 
 // middlewares
 app.use(helmet())
 app.use(cors())
-app.use(morgan())
+app.use(morgan("dev"))
 
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
@@ -35,8 +35,6 @@ app.delete('/delete:id', taskController.deleteTask)
 
 app.use(errorController.error404)
 
-app.
-
-  app.listen(PORT, () => {
-    console.log(`serever listening on port ${PORT}`)
-  })
+app.listen(PORT, () => {
+  console.log(`serever listening on port ${PORT}`)
+})

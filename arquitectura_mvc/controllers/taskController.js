@@ -3,12 +3,15 @@ const db = [
 ]
 
 const addNewTask = (req, res) => {
+  const { title } = req.body
+
   const newTask = {
     id: db.length + 1,
     title,
     completed: false
   }
   db.push(newTask)
+  res.redirect('/')
 }
 
 const deleteTask = (req, res) => { }
@@ -19,7 +22,9 @@ const completeTask = (req, res) => { }
 
 const uncompleteTask = (req, res) => { }
 
-const getAllTasks = (req, res) => { }
+const getAllTasks = (req, res) => {
+  res.json(db)
+}
 
 const getAddTaskForm = (req, res) => { }
 

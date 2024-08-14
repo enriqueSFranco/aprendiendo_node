@@ -5,7 +5,7 @@ let db = [
 const addNewTask = (req, res) => {
   const { title } = req.body
   if (!title) {
-    return res.status(400).json({ message: 'El título de la tarea es obligatorio.' })
+    return res.status(400).json({ error: true, message: 'El título de la tarea es obligatorio.' })
   }
 
   const newTask = {
@@ -14,7 +14,7 @@ const addNewTask = (req, res) => {
     completed: false
   }
   db.push(newTask)
-  res.status(201).json({ message: 'Tarea añadida correctamente', task: newTask })
+  res.status(201).json({ error: false, message: 'Tarea añadida correctamente', task: newTask })
 }
 
 const deleteTask = (req, res) => {
@@ -22,11 +22,11 @@ const deleteTask = (req, res) => {
   const taskToDelete = db.find(task => task.id === id)
 
   if (!taskToDelete)
-    return res.status(404).json({ message: `La tarea ${db[id].title} no se encontro en tu registro de tareas.` })
+    return res.status(404).json({ error: true, message: `La tarea ${db[id].title} no se encontro en tu registro de tareas.` })
 
   db = db.filter(task => task.id != id)
 
-  return res.json({ message: `Tarea con ID ${id} ha sido eliminada correctamente.` })
+  return res.json({ error: false, message: `Tarea con ID ${id} ha sido eliminada correctamente.` })
 }
 
 const editTask = (req, res) => {
@@ -36,10 +36,10 @@ const editTask = (req, res) => {
   // console.log({ taskToUpdate, id })
 
   if (!taskToUpdate) {
-    return res.status(404).json({ message: `La tarea ${db[id].title} no se encontro en tu registro de tareas.` })
+    return res.status(404).json({ error: true, message: `La tarea ${db[id].title} no se encontro en tu registro de tareas.` })
   }
   taskToUpdate.title = title
-  return res.json({ message: `Tarea con ID ${id} actualizada correctamente.` })
+  return res.json({ error: false, message: `Tarea con ID ${id} actualizada correctamente.` })
 }
 
 const completeTask = (req, res) => {
@@ -58,19 +58,27 @@ const uncompleteTask = (req, res) => {
   const task = db.find(task => task.id === id)
 
   if (!task)
-    return res.status(404).json({ message: `La tarea ${db[id].title} no se encontro en tu registro de tareas.` })
+    return res.status(404).json({ error: true, message: `La tarea ${db[id].title} no se encontro en tu registro de tareas.` })
 
   task.completed = false
-  return res.json({ message: `Tarea con ID ${id} se ha completado.` })
+  return res.json({ error: false, message: `Tarea con ID ${id} se ha completado.` })
 }
 
 const getAllTasks = (req, res) => {
+  if (db.length === 0) return res.json({ message: 'No hay tareas por hacer.' })
   return res.json(db)
 }
 
-const getAddTaskForm = (req, res) => { }
+const getTaskById = (req, res) => {
+  const id = parseInt(req.params.id)
+  const taskIdx = db.findIndex(task => task.id === id)
+  const notFound = -1
 
-const getEditTaskForm = (req, res) => { }
+  if (taskIdx === notFound)
+    return res.status(404).json({ message: `No se encontro la tarea '${db[taskIdx].title}'` })
+
+  return res.status(200).json({ task: db[taskIdx] })
+}
 
 export default {
   addNewTask,
@@ -79,6 +87,5 @@ export default {
   completeTask,
   uncompleteTask,
   getAllTasks,
-  getAddTaskForm,
-  getEditTaskForm
+  getTaskById
 }

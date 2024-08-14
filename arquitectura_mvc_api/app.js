@@ -16,25 +16,20 @@ app.use(helmet())
 app.use(cors())
 app.use(morgan("dev"))
 
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'pug')
-
-app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 // routes
-app.get('/', taskController.getAllTasks)
-app.get('/add', taskController.getAddTaskForm)
-app.post('/add', taskController.addNewTask)
-app.get('/edit', taskController.getEditTaskForm)
-app.patch('/edit/:id', taskController.editTask)
-app.get('/complete', taskController.completeTask)
-app.get('/uncomplete', taskController.uncompleteTask)
-app.delete('/delete/:id', taskController.deleteTask)
+app.get('/tasks', taskController.getAllTasks)
+app.get('/task/:id', taskController.getTaskById)
+app.post('/tasks/add', taskController.addNewTask)
+app.patch('/tasks/edit/:id', taskController.editTask)
+app.patch('/tasks/complete', taskController.completeTask)
+app.patch('/tasks/uncomplete', taskController.uncompleteTask)
+app.delete('/tasks/delete/:id', taskController.deleteTask)
 
 app.use(errorController.error404)
 
 app.listen(PORT, () => {
-  console.log(`serever listening on port ${PORT}`)
+  console.log(`serever listening on port http://localhost:${PORT}/tasks`)
 })

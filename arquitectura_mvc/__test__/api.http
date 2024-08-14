@@ -1,0 +1,21 @@
+### Recuperar la lista de tareas
+GET http://localhost:3001
+
+### Agregar una nueva tarea
+POST http://localhost:3001/add
+Content-Type: application/json
+
+{
+  "title": "Estudiar para aprovar la entrevista de trabajo"
+}
+
+### Editar una tarea
+PATCH http://localhost:3001/edit/1
+Content-Type: application/json
+
+{
+  "title": "Ir a una noche de museo"
+}
+
+### Eliminar una tarea de la lista
+DELETE http://localhost:3001/delete/1

@@ -3,41 +3,62 @@ import { IncomingMessage, ServerResponse } from "node:http";
 import { isTokenRevoked } from "../models/revokeToken";
 import config from "../config";
 
+/**
+ * Interface que extiende `IncomingMessage` y agrega la propiedad `user` 
+ * que puede ser un objeto `JwtPayload` o un string.
+ */
 export interface AuthenticatedRequest extends IncomingMessage {
-	user?: JwtPayload | string
+	user?: JwtPayload | string;
 }
 
-export const authenticateToken = async (req: AuthenticatedRequest, res: ServerResponse) => {
-	const authHeader = req.headers["authorization"] // <-- recuperamos el token de la cabecera authorization
+/**
+ * Middleware para autenticar el token de la cabecera Authorization.
+ * 
+ * Este middleware valida el token JWT enviado en la cabecera `Authorization`. Si el token es válido y no está revocado, 
+ * se decodifica y se adjunta a la propiedad `user` del objeto `req`. Si el token es inválido o revocado, responde 
+ * con un error adecuado.
+ *
+ * @param {AuthenticatedRequest} req - Objeto de solicitud que extiende `IncomingMessage` y contiene el token JWT.
+ * @param {ServerResponse} res - Objeto de respuesta de servidor para enviar la respuesta de error si es necesario.
+ * @returns {boolean | void} - Devuelve `true` si el token es válido y ha sido decodificado correctamente, 
+ * o `false` si ocurre algún error en el proceso de autenticación.
+ */
+export const authenticateToken = async (req: AuthenticatedRequest, res: ServerResponse): Promise<boolean | void> => {
+	const authHeader = req.headers["authorization"]; // Recuperamos el token de la cabecera "Authorization"
 
 	if (!authHeader) {
-		return res.end(JSON.stringify({ success: false, message: "Authorization header missing." }))
+		res.end(JSON.stringify({ success: false, message: "Authorization header missing." }));
+		return false
 	}
 
-	// si existe authHeader "authorization": `Barear <token>` --> [Bearer, token]
-	const token = authHeader && authHeader.split(" ")[1] // recupereamos el token
+	// Si existe authHeader con formato "Authorization: Bearer <token>", separamos el token
+	const token = authHeader && authHeader.split(" ")[1];
 
-	// que pasa si no hay token
+	// Si no hay token, respondemos con un error 404
 	if (!token) {
-		res.statusCode = 404
-		res.end(JSON.stringify({ success: false, message: "Unauthorized" }))
-		return false
+		res.statusCode = 404;
+		res.end(JSON.stringify({ success: false, message: "Unauthorized" }));
+		return false;
 	}
 
-	// el token ya expiro
+	// Verificamos si el token ha sido revocado
 	if (isTokenRevoked(token)) {
-		res.statusCode = 403
-		res.end(JSON.stringify({ success: false, message: "Forbidden" }))
-		return false
+		res.statusCode = 403;
+		res.end(JSON.stringify({ success: false, message: "Forbidden" }));
+		return false;
 	}
 
-	// verificamos el token
+	// Verificamos y decodificamos el token
 	try {
-		const decode = verify(token, config.jwtSecret)
-		req.user = decode
-		return true
+		const decode = verify(token, config.jwtSecret);
+		req.user = decode; // Guardamos la información decodificada en la propiedad "user" de la solicitud
+		return true;
 	} catch (_error) {
-		res.statusCode = 403
-		res.end(JSON.stringify({ success: false, message: "Forbidden" }))
+		res.statusCode = 403;
+		res.end(JSON.stringify({ success: false, message: "Forbidden" }));
 	}
-}
+};
+
+
+// forma elegante de quitar propiedades a un objeto
+//const {password: _, ...publicUser} = user

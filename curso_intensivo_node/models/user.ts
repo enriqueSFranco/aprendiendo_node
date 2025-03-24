@@ -1,7 +1,7 @@
 import { compare, hash } from "bcrypt"
 import { z } from "zod"
 
-enum RoleUser {
+export enum Role {
 	USER = 1,
 	ADMIN = 2
 }
@@ -17,7 +17,7 @@ export const AuthSchema = z.object({
 // extract the infered type
 export type User = Zod.infer<typeof AuthSchema> & {
 	id: number,
-	role: RoleUser.ADMIN | RoleUser.USER,
+	role: Role.ADMIN | Role.USER,
 	refreshToken?: string
 }
 
@@ -34,7 +34,7 @@ export const createUser = async (email: string, password: string): Promise<User>
 	const hashedPassword = await hash(password, 10)
 	const newUser: User = {
 		id: Date.now(),
-		role: RoleUser.USER,
+		role: Role.USER,
 		email,
 		password: hashedPassword,
 	}

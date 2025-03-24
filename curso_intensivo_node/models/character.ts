@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 // Esquema de validación para un personaje utilizando Zod
-const CharacterSchema = z.object({
+export const CharacterSchema = z.object({
 	name: z.string().min(3),
 	lastName: z.string().min(4)
 })
@@ -37,6 +37,10 @@ export const getCharacterById = (id: number): Character | undefined => {
  * @returns {Character} El personaje agregado con su ID asignado.
  */
 export const addCharacter = (character: Character): Character => {
+	if (getCharacterById(character.id)) {
+		console.log("Character with id", character.id, "already exists")
+		return character
+	}
 	const newCharacter: Character = {
 		...character,
 		id: new Date().getTime() // Usamos el timestamp como ID único

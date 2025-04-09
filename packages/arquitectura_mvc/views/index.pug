@@ -1,0 +1,11 @@
+extends layout.pug
+
+block content
+  main.container
+    h1=title
+    ul
+      each task in tasks
+        li
+          a(href=`/edit/${task.id}`) #{task.title}
+      else
+        li There are no values

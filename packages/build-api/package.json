@@ -1,0 +1,31 @@
+{
+  "name": "build-api",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./http.js",
+    "start:express": "nodemon ./index.js",
+    "start:app": "nodemon ./app.js",
+    "start:mysql": "nodemon ./server-with-mysql.js",
+    "start:local": "nodemon ./server-with-local.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "standard": "^17.1.0"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  },
+  "dependencies": {
+    "cors": "2.8.5",
+    "express": "4.19.2",
+    "mysql2": "^3.9.6",
+    "zod": "3.22.4"
+  }
+}

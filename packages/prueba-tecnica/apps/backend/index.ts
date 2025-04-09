@@ -1,9 +1,9 @@
 import express from 'express'
 
-import { upload } from './middlewares/multer.ts'
-import { checkTypeFile } from './utils/validate-file.ts'
-import { corsMiddleware } from './middlewares/cors.ts'
-import { CSVToJSONTransformer } from './utils/csv-to-json-transformer.ts'
+import { upload } from './middlewares/multer.js'
+import { checkTypeFile } from './utils/validate-file.js'
+import { corsMiddleware } from './middlewares/cors.js'
+import { CSVToJSONTransformer } from './utils/csv-to-json-transformer.js'
 
 let userData: Array<Record<string, string>> = []
 

@@ -1,0 +1,18 @@
+{
+  "name": "fullstack-backend-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "node dist/index.js",
+    "build": "tsc",
+    "copy": "cp index.ts /dist/index.ts",
+    "copy:windows": "copy index.ts /dist/index.ts",
+    "start": "pnpm run build && pnpm run serve && pnpm run copy",
+    "start:windows": "pnpm run build && pnpm run serve && pnpm run copy:windows"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

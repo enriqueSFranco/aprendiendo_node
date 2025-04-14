@@ -60,7 +60,7 @@ Hay proyectos que sigue una arquitectura **MVC** (Modelo-Vista-Controlador) y ot
 ---
 
 ## 📁 Estructura del monorepo
-
+```bash
 aprendiendo-node/
 ├── packages/
 │   ├── arquitectura_mvc/
@@ -73,9 +73,7 @@ aprendiendo-node/
 ├── pnpm-workspace.yaml   # Configuración del monorepo para pnpm
 ├── tsconfig.base.json    # Configuración base de TypeScript
 └── README.md
-
-
-
+```
 ---
 
 ## 🚀 Primeros pasos
@@ -89,5 +87,3 @@ pnpm install
 pnpm --filter project_name dev
 
 ```
-
-

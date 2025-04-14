@@ -1,1 +1,4 @@
+pnpm --filter fullstack-backend-ts format
+pnpm --filter fullstack-backend-ts test
 pnpm --filter fullstack-backend-ts lint
+pnpm --filter fullstack-backend-ts build

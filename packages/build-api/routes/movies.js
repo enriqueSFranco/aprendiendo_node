@@ -14,5 +14,4 @@ export function createMovieRouter ({ model }) {
 
   // ACTUALIZAMOS SOLO UNA PARTE DE LA PELICULA
   router.patch('/:id', movieController.update)
-
 }

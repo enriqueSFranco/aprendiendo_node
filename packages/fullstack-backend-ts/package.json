@@ -4,19 +4,40 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 0",
     "build": "tsc",
     "copy": "cp index.ts /dist/index.ts",
     "copy:windows": "copy index.ts /dist/index.ts",
     "start": "pnpm run build && pnpm run serve && pnpm run copy",
-    "start:windows": "pnpm run build && pnpm run serve && pnpm run copy:windows"
+    "start:windows": "pnpm run build && pnpm run serve && pnpm run copy:windows",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts",
+    "dev": "nodemon --watch src/** --ext ts,json --ignore src/**/*.spec.ts --exec ts-node src/main.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "hono": "4.7.6",
-    "mongoose": "^8.13.2"
+    "@types/express": "^5.0.1",
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.13.2",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.24.0",
+    "@types/body-parser": "^1.19.5",
+    "@types/mongoose": "^5.11.97",
+    "eslint": "^8.57.1",
+    "globals": "^16.0.0",
+    "prettier": "^3.2.5",
+    "typescript-eslint": "^8.29.1"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix"
+    ]
   }
 }

@@ -26,16 +26,10 @@ export type TUpdateTodoItem = {
  * Standard representation of a Todo item.
  */
 export type TTodoItem = {
-  /** Unique identifier of the todo item (MongoDB _id as string) */
   id?: string;
-  /** Title of the todo */
   title: string;
-  /** Description of the todo */
-  description: string;
-  /** Whether the task is complete or not */
-  complete: boolean;
-  /** Creation timestamp */
-  createdAt: Date;
-  /** Last updated timestamp */
-  updatedAt: Date;
+  description?: string;
+  complete?: boolean;
+  archived?: boolean;
+  userId: string;
 };

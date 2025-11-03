@@ -11,7 +11,7 @@ class TodoController {
         this.service = service;
         this.service = service;
     }
-    get = async (req, res) => {
+    getAll = async (_, res) => {
         try {
             const data = await this.service.getAllTodos();
             res.status(200).json({ data });
@@ -22,18 +22,19 @@ class TodoController {
             res.json({ error });
         }
     };
-    post = async (req, res) => {
+    getOne = async () => { };
+    create = async (req, res) => {
         try {
-            const { title, description } = req.body;
+            const { title, description, userId } = req.body;
             if (!title.trim())
                 throw new AppError_1.default("Title is required", 400);
             const newTodoItem = {
                 title,
                 description,
+                userId,
             };
             // TODO:
-            const userId = crypto.randomUUID();
-            const data = await this.service.create(newTodoItem, userId);
+            const data = await this.service.createTodo(newTodoItem, userId);
             res.status(201).json({ data });
         }
         catch (err) {
@@ -42,11 +43,11 @@ class TodoController {
             res.json({ error });
         }
     };
-    patch = async (req, res) => {
+    update = async (req, res) => {
         try {
             const { id } = req.params;
             const { title, description, complete } = req.body;
-            const updated = await this.service.update(id, {
+            const updated = await this.service.updateTodo(id, {
                 title,
                 description,
                 complete,
@@ -64,7 +65,7 @@ class TodoController {
     delete = async (req, res) => {
         try {
             const { id } = req.params;
-            const deleted = await this.service.delete(id);
+            const deleted = await this.service.deleteTodo(id);
             if (!deleted)
                 throw new AppError_1.default("Todo not found", 404);
             res.status(202).json({ deleted });

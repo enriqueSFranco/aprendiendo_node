@@ -15,5 +15,4 @@ class AppError extends Error {
     Error.captureStackTrace(this);
   }
 }
-
 export default AppError;

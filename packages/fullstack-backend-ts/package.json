@@ -10,7 +10,7 @@
     "copy:windows": "copy index.ts /dist/index.ts",
     "start": "pnpm run build && pnpm run serve && pnpm run copy",
     "start:windows": "pnpm run build && pnpm run serve && pnpm run copy:windows",
-    "lint": "eslint src/**/*.ts",
+    "lint": "pnpm eslint src/**/*.ts",
     "format": "prettier --write src/**/*.ts",
     "dev": "nodemon --watch src/** --ext ts,json --ignore src/**/*.spec.ts --exec ts-node src/main.ts"
   },
@@ -30,9 +30,12 @@
     "@eslint/js": "^9.24.0",
     "@types/body-parser": "^1.19.5",
     "@types/mongoose": "^5.11.97",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
     "eslint": "^8.57.1",
     "globals": "^16.0.0",
     "prettier": "^3.2.5",
+    "typescript": "^5.9.3",
     "typescript-eslint": "^8.29.1"
   },
   "lint-staged": {

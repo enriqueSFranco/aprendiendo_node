@@ -1,14 +1,15 @@
 import { Request, Response } from "express";
 import AppError from "../utils/errors/AppError";
 import { ITodoService } from "../services/interfaces/ITodoService";
-import { TCreateTodoItem } from "../domain/todo.types";
+import { TTodoItem } from "../domain/todo.types";
+import { ITodoController } from "./interfaces/ITodoController";
 
-export class TodoController {
+export class TodoController implements ITodoController {
   constructor(private service: ITodoService) {
     this.service = service;
   }
 
-  get = async (req: Request, res: Response) => {
+  getAll = async (_: Request, res: Response) => {
     try {
       const data = await this.service.getAllTodos();
       res.status(200).json({ data });
@@ -19,18 +20,20 @@ export class TodoController {
     }
   };
 
-  post = async (req: Request, res: Response) => {
+  getOne = async () => {};
+
+  create = async (req: Request, res: Response) => {
     try {
-      const { title, description } = req.body;
+      const { title, description, userId } = req.body;
       if (!title.trim()) throw new AppError("Title is required", 400);
 
-      const newTodoItem: TCreateTodoItem = {
+      const newTodoItem: TTodoItem = {
         title,
         description,
+        userId,
       };
       // TODO:
-      const userId = crypto.randomUUID();
-      const data = await this.service.create(newTodoItem, userId);
+      const data = await this.service.createTodo(newTodoItem, userId);
       res.status(201).json({ data });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unknown error";
@@ -39,11 +42,11 @@ export class TodoController {
     }
   };
 
-  patch = async (req: Request, res: Response) => {
+  update = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
       const { title, description, complete } = req.body;
-      const updated = await this.service.update(id, {
+      const updated = await this.service.updateTodo(id, {
         title,
         description,
         complete,
@@ -61,7 +64,7 @@ export class TodoController {
   delete = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const deleted = await this.service.delete(id);
+      const deleted = await this.service.deleteTodo(id);
 
       if (!deleted) throw new AppError("Todo not found", 404);
 

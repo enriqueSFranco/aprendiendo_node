@@ -1,12 +1,12 @@
-import winston from "winston"
+import winston from "winston";
 import { LoggerAdapter } from "./LoggerAdapter";
 
 enum LevelKey {
-  LOG = 'log',
-  INFO = 'info',
-  WARN = 'warn',
-  ERROR = 'error',
-  DEBUG = 'debug'
+  LOG = "log",
+  INFO = "info",
+  WARN = "warn",
+  ERROR = "error",
+  DEBUG = "debug",
 }
 
 class WinstonLoggerAdapter implements LoggerAdapter {
@@ -17,24 +17,24 @@ class WinstonLoggerAdapter implements LoggerAdapter {
       level: LevelKey.DEBUG,
       format: winston.format.combine(
         winston.format.timestamp(),
-        winston.format.json()
+        winston.format.json(),
       ),
       transports: [new winston.transports.Console()],
     });
   }
   debug(message: string, meta?: any): void {
-    this.logger.debug(message, {meta});
+    this.logger.debug(message, { meta });
   }
   info(message: string, meta?: any): void {
-    this.logger.info(message, {meta});
+    this.logger.info(message, { meta });
   }
   warn(message: string, meta?: any): void {
-    this.logger.warn(message, {meta});
+    this.logger.warn(message, { meta });
   }
   error(message: string, meta?: any): void {
-    this.logger.error(message, {meta});
+    this.logger.error(message, { meta });
   }
 }
 
 const winstonLoggerAdapter = new WinstonLoggerAdapter();
-export default winstonLoggerAdapter
+export default winstonLoggerAdapter;

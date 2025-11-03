@@ -1,8 +1,4 @@
-import {
-  TTodoItem,
-  TCreateTodoItem,
-  TUpdateTodoItem,
-} from "../domain/todo.types";
+import { TTodoItem, TUpdateTodoItem } from "../domain/todo.types";
 import { ITodoRepository } from "../repository/interfaces/ITodoRepository";
 import AppError from "../utils/errors/AppError";
 
@@ -17,10 +13,7 @@ export class TodoService {
   constructor(private readonly repository: ITodoRepository) {
     this.repository = repository;
   }
-  async create(
-    data: TCreateTodoItem,
-    userId: string,
-  ): Promise<TCreateTodoItem> {
+  async create(data: TTodoItem, userId: string): Promise<TTodoItem> {
     try {
       const counter = await this.repository.countPendingByUser(userId);
       if (counter >= 5)

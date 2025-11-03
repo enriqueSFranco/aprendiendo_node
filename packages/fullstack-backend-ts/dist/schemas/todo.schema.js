@@ -13,7 +13,7 @@ exports.todoSchema = new mongoose_1.Schema({
         type: Boolean,
         default: false,
     },
-    user: { type: mongoose_1.Schema.ObjectId, ref: "User" },
+    userId: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true },
 }, { timestamps: true });
 const TodoItemModel = (0, mongoose_1.model)("Todo", exports.todoSchema);
 // export interface TodoItem extends TTodoItem, Document {}

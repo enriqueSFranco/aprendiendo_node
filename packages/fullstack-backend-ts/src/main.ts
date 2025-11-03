@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import {createTodoListRouter} from "./routes/todo-list.rotues"
+import { createTodoListRouter } from "./routes/todo-list.rotues";
 import { connectionDatabase } from "./database/connections/MongodbConnection";
 
 const app = express();

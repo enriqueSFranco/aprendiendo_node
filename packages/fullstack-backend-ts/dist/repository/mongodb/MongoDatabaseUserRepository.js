@@ -7,13 +7,19 @@ const user_schema_1 = __importDefault(require("../../schemas/user.schema"));
 const AppError_1 = __importDefault(require("../../utils/errors/AppError"));
 const WinstonLoggerAdapter_1 = __importDefault(require("../../adapters/logger/WinstonLoggerAdapter"));
 class MongoDatabaseUserRepository {
-    create = async (data) => {
+    create = async (user) => {
         try {
-            if (!data.email.trim() || !data.password.trim() || !data.username.trim())
+            if (!user.email.trim() || !user.password.trim() || !user.username.trim())
                 throw new AppError_1.default("username and email and password are required", 400);
-            const user = new user_schema_1.default(data);
-            const savedUser = await user.save();
-            return savedUser.toObject();
+            const row = new user_schema_1.default(user);
+            const savedUser = await row.save();
+            return {
+                id: savedUser.id,
+                username: savedUser.username,
+                email: savedUser.email,
+                password: savedUser.password,
+                active: savedUser.active,
+            };
         }
         catch (err) {
             const error = err instanceof Error ? err : new Error("Unknown error");
@@ -74,7 +80,35 @@ class MongoDatabaseUserRepository {
             });
         }
     };
-    delete = async (_id) => { };
+    delete = async (_id) => {
+        try {
+            if (!_id || !_id.trim()) {
+                throw new AppError_1.default("User ID is required", 400);
+            }
+            const deletedDoc = await user_schema_1.default.findByIdAndDelete(_id).exec();
+            if (!deletedDoc) {
+                throw new AppError_1.default(`User with id '${_id}' not found`, 404);
+            }
+            return {
+                id: deletedDoc.id.toString(),
+                username: deletedDoc.username,
+                email: deletedDoc.email,
+                password: deletedDoc.password,
+                active: deletedDoc.active,
+            };
+        }
+        catch (err) {
+            const error = err instanceof Error ? err : new Error("Unknown error");
+            WinstonLoggerAdapter_1.default.error("[UserRepository:delete] Failed to delete user", {
+                id: _id,
+                message: error.message,
+                stack: error.stack,
+            });
+            if (error instanceof AppError_1.default)
+                throw error;
+            throw new AppError_1.default("Failed to delete the user. Please try again later.", 500);
+        }
+    };
 }
 const mongoDatabaseUserRepository = new MongoDatabaseUserRepository();
 exports.default = mongoDatabaseUserRepository;
